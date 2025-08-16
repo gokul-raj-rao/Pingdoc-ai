@@ -1,0 +1,120 @@
+{% extends 'courses/base.html' %}
+
+{% block content %}
+{% load static %}
+
+<main id="main" class="main">
+    <div class="alert alert-primary alert-dismissible fade show" role="alert">
+      <i class="bi bi-star me-1"></i>
+      Welcome to the {{ course.course_name }} Course!
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <!-- Course Video -->
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">{{ course.course_name }}</h5>
+        <p>{{ course.description }}</p>
+        {% if course.youtube_link %}
+            <iframe width="1080"
+                    height="512"
+                    src="{{ course.youtube_link }}"
+                    title="YouTube video player" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        {% endif %}
+        
+      </div>
+    </div>
+    <!-- ====================================== TABS ======================================= -->
+    <div class="pagetitle">
+      <h1>Activities</h1>
+      
+    </div><!-- End Page Title -->
+
+    <section class="section">
+      
+      <div class="col-lg-12">
+
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Materialsss</h5>
+
+            <!-- Default Tabs -->
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="book-tab" data-bs-toggle="tab" data-bs-target="#book" type="button" role="tab" aria-controls="book" aria-selected="true">Course Book</button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="doubts-tab" data-bs-toggle="tab" data-bs-target="#doubts" type="button" role="tab" aria-controls="doubts" aria-selected="false">Ask doubts(AI)</button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="materials-tab" data-bs-toggle="tab" data-bs-target="#materials" type="button" role="tab" aria-controls="materials" aria-selected="false">Ask Materials</button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="evaluate-tab" data-bs-toggle="tab" data-bs-target="#evaluate" type="button" role="tab" aria-controls="evaluate" aria-selected="false">Evaluate Yourself</button>
+              </li>
+            </ul>
+            <div class="tab-content pt-2" id="myTabContent">
+              <div class="tab-pane fade show active" id="book" role="tabpanel" aria-labelledby="book-tab">
+                {% if file_list %}
+                  {% for file in file_list %}
+                    <div class="card" style="width: 18rem;">
+                      <div class="card-body">
+                        <h5 class="card-title">{{ file }}</h5>
+                        
+                      </div>
+                    </div>
+                  {% endfor %}
+                {% endif %}
+               <br><br>
+               
+                
+              <!-- Open Book -->
+              {% comment %} <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ExtralargeModal">
+                Open Book
+              </button> {% endcomment %}
+
+              <div class="modal fade" id="ExtralargeModal" tabindex="-1">
+                <div class="modal-dialog modal-xl">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Book</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <embed src="SRSDOC.pdf" type="application/pdf" width="100%" height="500px">
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div><!-- End Extra Large Modal-->
+                  <!-- <div class="container mt-5">
+                    <embed src="SRSDOC.pdf" type="application/pdf" width="100%" height="600px">
+                  </div> -->
+              
+              <div class="tab-pane fade" id="doubts" role="tabpanel" aria-labelledby="doubts-tab">
+                Nesciunt totam et. Consequuntur magnam aliquid eos nulla dolor iure eos quia. Accusantium distinctio omnis et atque fugiat. Itaque doloremque aliquid sint quasi quia distinctio similique. Voluptate nihil recusandae mollitia dolores. Ut laboriosam voluptatum dicta.
+              </div>
+              <div class="tab-pane fade" id="materials" role="tabpanel" aria-labelledby="materials-tab">
+                Saepe animi et soluta ad odit soluta sunt. Nihil quos omnis animi debitis cumque. Accusantium quibusdam perspiciatis qui qui omnis magnam. Officiis accusamus impedit molestias nostrum veniam. Qui amet ipsum iure. Dignissimos fuga tempore dolor.
+              </div>
+              <div class="tab-pane fade" id="evaluate" role="tabpanel" aria-labelledby="evaluate-tab">
+                Saepe animi et soluta ad odit soluta sunt. Nihil quos omnis animi debitis cumque. Accusantium quibusdam perspiciatis qui qui omnis magnam. Officiis accusamus impedit molestias nostrum veniam. Qui amet ipsum iure. Dignissimos fuga tempore dolor.
+              </div>
+            </div><!-- End Default Tabs -->
+
+          </div>
+        </div>
+
+        
+
+      </div>
+    </section>
+
+  </main><!-- End #main -->
+{% endblock %}

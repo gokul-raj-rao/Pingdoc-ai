@@ -1,0 +1,111 @@
+{% extends 'admin/base.html' %}
+
+{% block content %}
+{% load static %}
+
+<main id="main" class="main">
+
+
+    <section class="section">
+        <div class="row">
+          <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                    <h5 class="card-title">PingDoc Chatbot</h5>
+                    
+                        <iframe src="http://localhost:8501/" name="iframe_a" height="700px" width="100%" title="Iframe Example"></iframe>
+                                
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+</main><!-- End #main -->
+
+ 
+
+
+{% comment %} <div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Chatbot</h4>
+                </div>
+                <div class="card-body" id="chat-box" style="height: 400px; overflow-y: auto;">
+                    <!-- Chat messages will appear here -->
+                </div>
+                <div class="card-footer">
+                    <div class="input-group">
+                        <input 
+                            type="text" 
+                            id="user-input" 
+                            class="form-control" 
+                            placeholder="Type your message..." 
+                            autocomplete="off">
+                        <button id="send-button" class="btn btn-primary">Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#send-button").click(function () {
+            const userMessage = $("#user-input").val().trim();
+            if (userMessage) {
+                // Append user message to chat
+                $("#chat-box").append(`
+                    <div class="d-flex justify-content-end mb-3">
+                        <div class="bg-primary text-white p-2 rounded">
+                            <strong>User:</strong> ${userMessage}
+                        </div>
+                    </div>
+                `);
+                $("#user-input").val("");
+
+                // Send AJAX request to server
+                $.ajax({
+                    url: "",
+                    method: "POST",
+                    data: {
+                        user_message: userMessage,
+                        csrfmiddlewaretoken: "{{ csrf_token }}"
+                    },
+                    success: function (response) {
+                        const aiResponse = response.ai_response;
+                        $("#chat-box").append(`
+                            <div class="d-flex justify-content-start mb-3">
+                                <div class="bg-light text-dark p-2 rounded">
+                                    <strong>AI:</strong> ${aiResponse}
+                                </div>
+                            </div>
+                        `);
+                        // Scroll chat to the bottom
+                        $("#chat-box").scrollTop($("#chat-box")[0].scrollHeight);
+                    },
+                    error: function () {
+                        alert("An error occurred. Please try again.");
+                    }
+                });
+            }
+        });
+
+        // Send message on pressing Enter
+        $("#user-input").keypress(function (e) {
+            if (e.which === 13) {
+                $("#send-button").click();
+            }
+        });
+    });
+</script> {% endcomment %}
+
+
+{% endblock %} 

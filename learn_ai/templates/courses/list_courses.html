@@ -1,0 +1,42 @@
+{% extends 'courses/base.html' %}
+
+{% block content %}
+{% load static %}
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>List of Courses</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          
+          <li class="breadcrumb-item active">List of courses</li>
+        </ol>
+        <a href="{% url 'add_course' %}" class="btn btn-primary mb-3">Add Course</a>
+      </nav>
+    </div><!-- End Page Title -->
+    
+    <section class="section">
+        <div class="row align-items-top">
+          {% for course in courses %}
+            <div class="col-lg-3">
+              
+                <div class="card">
+                    <img src="{% static "assets/img/1.jpg" %}" class="card-img-top" alt="...">
+                    <div class="card-img-overlay">
+                    <h5 class="card-title">{{ course.course_name }}</h5>
+                    <p class="card-text">{{ course.description|truncatechars:50 }}</p>
+                    <a href="{% url 'view_course' course.id %}" class="card-link">View</a>
+                    <a href="{% url 'delete_course' course.id %}" class="card-link">Delete</a>
+                    </div>
+                </div>
+              
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+  </main><!-- End #main -->
+
+{% endblock %} 

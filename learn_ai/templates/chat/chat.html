@@ -1,0 +1,33 @@
+{% extends 'chat/base.html' %}
+{% block content %}
+    <h1>Chat</h1>
+    <h3>Chat History</h3>
+        <ul class="list-group">
+            {% for message in chat_messages %}
+                
+                <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                    <strong>{{ message.role }}:</strong> {{ message.content }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+            {% endfor %}
+        </ul>
+<form method="post">
+    {% csrf_token %}
+    <label for="basic-url" class="form-label">Enter Here: </label>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="basic-addon3">Ask Me: </span>
+        <input type="text" name="user_input" placeholder="Enter your question" class="form-control" id="basic-url" aria-describedby="basic-addon3">
+    </div>
+    <div class="col-sm-10">
+        <button type="submit" class="btn btn-primary">Send➡️</button>
+    </div>
+    
+</form>
+
+{% comment %} 
+{% if response %}
+    <p>You: {{ user_input }}</p>
+    <p>Bot: {{ response }}</p>
+{% endif %} {% endcomment %}
+
+{% endblock %}

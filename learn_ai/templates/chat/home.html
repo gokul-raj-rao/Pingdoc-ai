@@ -1,0 +1,156 @@
+{% extends 'chat/base.html' %}
+{% block content %}
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+    .form-container {
+        max-width: 400px;
+        margin: auto;
+        margin-top: 5%;
+        padding: 20px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    .title {
+        margin-bottom: 20px;
+        text-align: center;
+        color: #2c3e50 !important;
+    }
+    button {
+        cursor: pointer;
+        background: #2c3e50 !important;
+        border: none !important;
+    }
+    button:hover {
+        background: #34495e !important;
+    }
+
+    .link a {
+        color: #2c3e50;
+    }
+    .image-card {
+            position: relative;
+        }
+        .delete-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            border-radius: 50%;
+            padding: 5px;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+
+</style>
+<body>
+    <div class="form-container">
+        <h2 class="title">Upload File</h2>
+        <form action="{% url 'upload' %}" method="POST" id="uploadForm" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input id="fileInput" type="file" name="file" style="display: none;" required>
+            <button id="selectFileButton" type="button" class="btn btn-primary btn-block">
+                Upload
+            </button>
+        </form>
+    </div>
+    {% if images %}
+    <div class="container mt-5">
+        <hr/>
+        <h3>All Files</h3>
+        <div class="row row-cols-1 row-cols-md-4 g-4">
+                {% for image in images %}
+                <div class="col">
+                    <div class="card h-100 image-card">
+                        {% comment %} <img src="{{ image.url }}" class="card-img-top" alt="Image"> {% endcomment %}
+                        <p></p>
+                        
+                        <div class="card" style="width: 18rem;">
+                            <div class="card-body">
+                                
+                              <h5 class="card-title">{{ image.key }}</h5>
+                              <h6 class="card-subtitle mb-2 text-body-secondary">Link: {{ image.url }}</h6>
+                              <p class="card-text">PDF FILE</p>
+                              <a href="#" class="card-link">
+                                <form action="{% url 'delete_image' %}" method="POST" class="delete-icon">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="image_key" value="{{ image.url }}">
+                                    <input type="submit" style="color: tomato;"
+                                    value="Delete" class="btn btn-link p-0 border-0" />
+                                </form>
+                                
+                            </a> 
+                            <a href="#" class="card-link">
+                                <form action="{% url 'create_vector_store' %}" method="POST" style="display: inline;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="image_key" value="{{ image.url }}">
+                                    <input type="submit" value="Create Vector" class="btn btn-link p-0 border-0" />
+                                </form>
+                            </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+    {% if flag %}
+    <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Scrolling long content</h5>
+          <p>When modals become too long for the user’s viewport or device, they scroll independent of the page itself. You can also create a scrollable modal that allows scroll the modal body by adding <code>.modal-dialog-scrollable</code> to <code>.modal-dialog</code></p>
+          <!-- Modal Dialog Scrollable -->
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalDialogScrollable">
+            Modal Dialog Scrollable
+          </button>
+          <div class="modal fade" id="modalDialogScrollable" tabindex="-1">
+            <div class="modal-dialog modal-dialog-scrollable">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Modal Dialog Scrollable</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  
+                    <ul class="list-group">
+                        {% for message in chat_history %}
+                            <li class="list-group-item">
+                                <strong>{{ message.role }}:</strong> {{ message.content }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <form method="post" >
+                        {% csrf_token %} 
+                        <input type="text" name="text_input"/>
+                        <input type="submit" class="btn btn-primary" value="Send">
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+              </div>
+            </div>
+          </div><!-- End Modal Dialog Scrollable-->
+
+        </div>
+    </div>
+    {% endif %}
+</body>
+
+<script>
+    document.getElementById('selectFileButton').addEventListener('click', function () {
+        document.getElementById('fileInput').click();
+    });
+
+    document.getElementById('fileInput').addEventListener('change', function () {
+        if (this.files.length > 0) {
+            document.getElementById('uploadForm').submit();
+        }
+    });
+</script>
+{% endblock %}
