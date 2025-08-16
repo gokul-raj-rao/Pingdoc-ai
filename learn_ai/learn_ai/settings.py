@@ -11,8 +11,12 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 import os
+from dotenv import load_dotenv
 
 from pathlib import Path
+
+load_dotenv()
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-*^-v&d98l81jm1cm7_*3_$shk0ekp=yxh@k^=3xpf-t8ph@ct#'
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -142,7 +146,7 @@ CORS_ALLOWED_ORIGINS = [
     
 ]
 
-AWS_ACCESS_KEY_ID = 'AKIASDRANOU63OD4W6U2'
-AWS_SECRET_ACCESS_KEY = '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'
-AWS_STORAGE_BUCKET_NAME = 'sgrr-store'
-AWS_S3_REGION_NAME = 'ap-south-1' 
+AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
+AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME")
+AWS_S3_REGION_NAME = os.environ.get("AWS_S3_REGION_NAME")

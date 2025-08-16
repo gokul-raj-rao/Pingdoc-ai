@@ -159,12 +159,12 @@ def process_pdf_and_chat(pdf_path, query):
 # ---------------------------END INBUILD FUNCTIONS---------------------------------
 
 
-bucket_name = settings.AWS_STORAGE_BUCKET_NAME
-region = settings.AWS_S3_REGION_NAME
+bucket_name = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+region = os.environ.get('AWS_S3_REGION_NAME')
 s3 = boto3.client(
         's3',
-        aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
-        aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+        aws_access_key_id=os.environ.get('AWS_ACCESS_KEY_ID'),
+        aws_secret_access_key=os.environ.get('AWS_SECRET_ACCESS_KEY'),
     )
 def upload_to_s3(file, bucket_name):
     s3.upload_fileobj(file, bucket_name, file.name,ExtraArgs={
@@ -186,19 +186,19 @@ def get_s3_objects(bucket_name):
 
 def upload_file(request):
     if request.method == 'POST' and request.FILES.get('file'):
-        file = upload_to_s3(request.FILES['file'], settings.AWS_STORAGE_BUCKET_NAME)
+        file = upload_to_s3(request.FILES['file'], os.environ.get('AWS_STORAGE_BUCKET_NAME'))
         file_name = request.FILES['file'].name
         messages.success(request, "File uploaded successfully.")
-        object_keys = get_s3_objects(settings.AWS_STORAGE_BUCKET_NAME)
-        s3_url =f"https://s3.{settings.AWS_S3_REGION_NAME}.amazonaws.com/{settings.AWS_STORAGE_BUCKET_NAME}/"
+        object_keys = get_s3_objects(os.environ.get('AWS_STORAGE_BUCKET_NAME'))
+        s3_url =f"https://s3.{os.environ.get('AWS_S3_REGION_NAME')}.amazonaws.com/{os.environ.get('AWS_STORAGE_BUCKET_NAME')}/"
         images = [{'url': s3_url + key} for key in object_keys]
         print(file_name)
         
         return render(request, 'chat/home.html', {'images': images}) 
        
 
-    object_keys = get_s3_objects(settings.AWS_STORAGE_BUCKET_NAME)
-    s3_url = f"https://s3.{settings.AWS_S3_REGION_NAME}.amazonaws.com/{settings.AWS_STORAGE_BUCKET_NAME}/"
+    object_keys = get_s3_objects(os.environ.get('AWS_STORAGE_BUCKET_NAME'))
+    s3_url = f"https://s3.{os.environ.get('AWS_S3_REGION_NAME')}.amazonaws.com/{os.environ.get('AWS_STORAGE_BUCKET_NAME')}/"
     images = [{'url': s3_url + key} for key in object_keys]
     filename = os.path.basename(s3_url)
     
@@ -235,9 +235,9 @@ def chat_view(request):
         print(pdf_key)
         print(type(pdf_key))
         s3 = boto3.client('s3',
-        aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
-        aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY)
-        bucket = settings.AWS_STORAGE_BUCKET_NAME
+        aws_access_key_id=os.environ.get('AWS_ACCESS_KEY_ID'),
+        aws_secret_access_key=os.environ.get('AWS_SECRET_ACCESS_KEY')) 
+        bucket = os.environ.get('AWS_STORAGE_BUCKET_NAME') 
             
             
         s3.download_file(bucket, pdf_key, local_pdf_path)
