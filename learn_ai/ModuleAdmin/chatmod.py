@@ -68,7 +68,7 @@ def summarize_chat_history(chat_history):
 
 
 def main():
-    print("Welcome to ArvDocuQuery!")
+    
     print("1. Upload PDF")
     print("2. Enter Web URL")
     option = input("Choose an option (1/2): ").strip()
